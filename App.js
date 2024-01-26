@@ -1,181 +1,36 @@
-import React, { useState } from "react"; 
-import { 
-	View, 
-	Text, 
-	TextInput, 
-	TouchableOpacity, 
-	FlatList, 
-	StyleSheet, 
-} from "react-native"; 
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { OnboardFlow } from 'react-native-onboard';
+//Image Credits for image 2
+//https://www.freepik.com/free-vector/watercolor-baby-milestone-card-template_34993652.htm#query=baby%20milestone&position=4&from_view=search&track=ais&uuid=3ed32dfa-6aee-4fb9-b094-761a8aba00b5
 
-const App = () => { 
-	const [task, setTask] = useState(""); 
-	const [tasks, setTasks] = useState([]); 
-	const [editIndex, setEditIndex] = useState(-1); 
+import HomeScreen from './screens/home';
 
-	const handleAddTask = () => { 
-		if (task) { 
-			if (editIndex !== -1) { 
-				// Edit existing task 
-				const updatedTasks = [...tasks]; 
-				updatedTasks[editIndex] = task; 
-				setTasks(updatedTasks); 
-				setEditIndex(-1); 
-			} else { 
-				// Add new task 
-				setTasks([...tasks, task]); 
-			} 
-			setTask(""); 
-		} 
-	}; 
+const App = () => {
+  return (
+	<View style={{flex:1}}>
+		<OnboardFlow
+			pages={[
+				{
+				title: 'Welcome to Baby Milestone Tracker',
+				subtitle: 'Easily track and create memorable moments of your childs growth',
+				imageUri: Image.resolveAssetSource(require('./assets/onboard.png')).uri,
+			
+				},
+				{
+				title: 'Customize Your Baby Milestone',
+				subtitle: 'Easily add, view, and edit milestones for your baby',
+				imageUri: Image.resolveAssetSource(require('./assets/babyMT.png')).uri,
+				}
+			]}
+			type={'bottom-sheet'}
+		/>
 
-	const handleEditTask = (index) => { 
-		const taskToEdit = tasks[index]; 
-		setTask(taskToEdit); 
+		<HomeScreen />
 
-    //setEditIndex to index of what is being edited which is not -1, so btn changes to update milestone
-		setEditIndex(index); 
-	}; 
-
-	const handleDeleteTask = (index) => { 
-    //Spread Operator, updatedTasks value is all the values of tasks
-		const updatedTasks = [...tasks];
+	</View>
     
-    //At position index, remove 1 items, then setTasks to the updatedTasks value
-    //https://www.w3schools.com/jsref/jsref_splice.asp
-		updatedTasks.splice(index, 1); 
-		setTasks(updatedTasks); 
-	}; 
-
-	const renderItem = ({ item, index }) => ( 
-		<View style={styles.task}> 
-			<Text 
-				style={styles.itemList}>{item}</Text> 
-			<View 
-				style={styles.taskButtons}> 
-				<TouchableOpacity 
-					onPress={() => handleEditTask(index)}> 
-					<Text 
-						style={styles.editButton}>Edit</Text> 
-				</TouchableOpacity> 
-				<TouchableOpacity 
-					onPress={() => handleDeleteTask(index)}> 
-					<Text 
-						style={styles.deleteButton}>Delete</Text> 
-				</TouchableOpacity> 
-			</View> 
-		</View> 
-	); 
-
-	return ( 
-		<View style={styles.container}> 
-			<Text style={styles.heading}>Baby Milestone Tracker</Text> 
-			<Text style={styles.title}>Milestone</Text> 
-			<TextInput 
-				style={styles.input} 
-				placeholder="Enter Milestone"
-				value={task} 
-				onChangeText={(text) => setTask(text)} 
-			/> 
-			<TouchableOpacity 
-				style={styles.addButton} 
-				onPress={handleAddTask}> 
-				<Text style={styles.addButtonText}> 
-					{editIndex !== -1 ? "Update Milestone" : "Add Milestone"} 
-				</Text> 
-			</TouchableOpacity> 
-			<FlatList 
-				data={tasks} 
-				renderItem={renderItem} 
-				keyExtractor={(item, index) => index.toString()} 
-			/> 
-		</View> 
-	); 
-}; 
-
-const styles = StyleSheet.create({ 
-	container: { 
-		flex: 1, 
-		padding: 40, 
-		marginTop: 40, 
-	}, 
-	title: { 
-		fontSize: 24, 
-		fontWeight: "bold", 
-		marginBottom: 20, 
-	}, 
-	heading: { 
-		fontSize: 30, 
-		fontWeight: "bold", 
-		marginBottom: 7, 
-		color: "green", 
-	}, 
-	input: { 
-		borderWidth: 3, 
-		borderColor: "#ccc", 
-		padding: 10, 
-		marginBottom: 10, 
-		borderRadius: 10, 
-		fontSize: 18, 
-	}, 
-	addButton: { 
-		backgroundColor: "green", 
-		padding: 10, 
-		borderRadius: 5, 
-		marginBottom: 10, 
-	}, 
-	addButtonText: { 
-		color: "white", 
-		fontWeight: "bold", 
-		textAlign: "center", 
-		fontSize: 18, 
-	}, 
-	task: { 
-		flexDirection: "row", 
-		justifyContent: "space-between", 
-		alignItems: "center", 
-		marginBottom: 15, 
-		fontSize: 18, 
-	}, 
-	itemList: { 
-		fontSize: 19, 
-	}, 
-	taskButtons: { 
-		flexDirection: "row", 
-	}, 
-	editButton: { 
-		marginRight: 10, 
-		color: "green", 
-		fontWeight: "bold", 
-		fontSize: 18, 
-	}, 
-	deleteButton: { 
-		color: "red", 
-		fontWeight: "bold", 
-		fontSize: 18, 
-	}, 
-}); 
+  );
+};
 
 export default App;
-
-
-// import { StatusBar } from 'expo-status-bar';
-// import { StyleSheet, Text, View } from 'react-native';
-
-// export default function App() {
-//   return (
-//     <View style={styles.container}>
-//       <Text>Open up App.js to start working on your app!</Text>
-//       <StatusBar style="auto" />
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });

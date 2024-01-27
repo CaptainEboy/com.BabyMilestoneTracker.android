@@ -10,11 +10,26 @@ import {
 } from "react-native"; 
 
 import Header from "./header";
+import DashboardScreen from "./dashboard";
 
 const HomeScreen = () => { 
 	const [task, setTask] = useState(""); 
 	const [tasks, setTasks] = useState([]); 
 	const [editIndex, setEditIndex] = useState(-1); 
+	const [showApp, setShowApp] = useState(false);
+
+	const d = new Date();
+	const weekday = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+	let day = weekday[d.getDay()];
+
+	const month = ["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+	let name = month[d.getMonth()];
+
+	let date = d.getUTCDate();
+
+	let year = d.getFullYear();
+
+	const mydate= day + "," + " " + name + " " + date + " " + year;
 
 	const handleAddTask = () => { 
 		if (task) { 
@@ -52,8 +67,23 @@ const HomeScreen = () => {
 
 	const renderItem = ({ item, index }) => ( 
 		<View style={styles.task}> 
-			<Text 
-				style={styles.itemList}>{item}</Text> 
+			<View style={{ flexDirection: "column" }}>
+				<View >
+					<Text style={styles.itemList}>
+						{item}
+					</Text> 
+				</View>
+				<View></View>
+				
+				<View style={{ marginTop: 5 }}>
+					<Text style={{fontStyle: 'italic'}}>
+						{mydate}
+					</Text> 
+				</View>
+			</View>
+			
+			
+				
 			<View 
 				style={styles.taskButtons}> 
 				<TouchableOpacity 
@@ -72,32 +102,46 @@ const HomeScreen = () => {
 
 	return ( 
         <View style={{flex:1}}>
-            <View style={{marginTop: 23,}}>
-                <StatusBar style="inverted" backgroundColor="#0884C1"/>
-                <Header />
-            </View>
-            <View style={styles.container}> 
-                <Text style={styles.heading}>Baby Milestone Tracker</Text> 
-                <Text style={styles.title}>Milestone</Text> 
-                <TextInput 
-                    style={styles.input} 
-                    placeholder="Enter Milestone"
-                    value={task} 
-                    onChangeText={(text) => setTask(text)} 
-                /> 
-                <TouchableOpacity 
-                    style={styles.addButton} 
-                    onPress={handleAddTask}> 
-                    <Text style={styles.addButtonText}> 
-                        {editIndex !== -1 ? "Update Milestone" : "Add Milestone"} 
-                    </Text> 
-                </TouchableOpacity> 
-                <FlatList 
-                    data={tasks} 
-                    renderItem={renderItem} 
-                    keyExtractor={(item, index) => index.toString()} 
-                /> 
-            </View> 
+			{!showApp && ( 
+                    <>
+					 <View style={{marginTop: 23,}}>
+						<StatusBar style="inverted" backgroundColor="#0884C1"/>
+						<Header />
+					</View>
+					<View style={styles.container}> 
+						<Text style={styles.heading}>Baby Milestone Tracker</Text> 
+						<Text style={styles.title}>Milestone</Text> 
+						<TextInput 
+							style={styles.input} 
+							placeholder="Enter Milestone"
+							value={task} 
+							onChangeText={(text) => setTask(text)} 
+						/> 
+						<TouchableOpacity 
+							style={styles.addButton} 
+							onPress={handleAddTask}> 
+							<Text style={styles.addButtonText}> 
+								{editIndex !== -1 ? "Update Milestone" : "Add Milestone"} 
+							</Text> 
+						</TouchableOpacity> 
+						<FlatList 
+							data={tasks} 
+							renderItem={renderItem} 
+							keyExtractor={(item, index) => index.toString()} 
+						/> 
+					</View> 
+					</>
+			 	)
+			}
+
+
+			{showApp && ( 
+                    <>
+						<DashboardScreen />
+					</>
+				)
+			}
+           
 
         </View>
 		
@@ -107,8 +151,8 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({ 
 	container: { 
 		flex: 1, 
-		padding: 40, 
-		marginTop: 40, 
+		padding: 20, 
+		marginTop: 10, 
 	}, 
 	title: { 
 		fontSize: 24, 
@@ -142,9 +186,9 @@ const styles = StyleSheet.create({
 		fontSize: 18, 
 	}, 
 	task: { 
-		flexDirection: "row", 
-		justifyContent: "space-between", 
-		alignItems: "center", 
+		// flexDirection: "row", 
+		justifyContent: "space-evenly", 
+		// alignItems: "center", 
 		marginBottom: 15, 
 		fontSize: 18, 
 	}, 

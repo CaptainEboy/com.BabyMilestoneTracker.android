@@ -23,7 +23,7 @@ const App = () => {
 				imageUri: Image.resolveAssetSource(require('./assets/babyMT.png')).uri,
 				}
 			]}
-			type={'bottom-sheet'}
+			type={"fullscreen"}
 		/>
 
 		<HomeScreen />

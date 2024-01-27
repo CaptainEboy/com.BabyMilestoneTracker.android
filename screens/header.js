@@ -11,13 +11,14 @@ const Header = () => {
 
       <View style={{flexDirection: "row", columnGap: 5}}>
         <Text style={styles.textGray}>Welcome back,</Text>
-        <Text style={styles.textBold}>Nicolas</Text>
+        <Text style={styles.textBold}>Baby G</Text>
       </View>
 
       <View style={styles.imgAlign}>
         <TouchableOpacity>
             <Image
-            source={{ uri: "https://img.freepik.com/free-photo/casual-young-african-man-smiling-isolated-white_93675-128895.jpg?size=626&ext=jpg&ga=GA1.1.49247130.1697906011&semt=ais" }}
+            //source={{ uri: "https://img.freepik.com/free-photo/casual-young-african-man-smiling-isolated-white_93675-128895.jpg?size=626&ext=jpg&ga=GA1.1.49247130.1697906011&semt=ais" }}
+            source={require('../assets/onboard.png')}
             style={styles.img}
             />
         </TouchableOpacity>
